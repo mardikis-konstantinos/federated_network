@@ -1,0 +1,183 @@
+version: "3.8"
+
+services:
+  # ---------------- Databases ---------------- #
+  postgres:
+    image: postgres:15
+    container_name: keycloak-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: keycloak
+      POSTGRES_USER: kc
+      POSTGRES_PASSWORD: secret
+    volumes:
+      - keycloak_data:/var/lib/postgresql/data
+
+  mongo-database:
+    image: mongo:latest
+    container_name: mongo-database
+    restart: unless-stopped
+    ports: ["27017:27017"]
+    volumes:
+      - mongo_data:/data/db
+
+  # ---------------- Keycloak ---------------- #
+  keycloak:
+    image: quay.io/keycloak/keycloak:22.0.1
+    container_name: keycloak-auth-servers
+    restart: unless-stopped
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: adminpass
+      KC_DB: postgres
+      KC_DB_URL_HOST: postgres
+      KC_DB_URL_DATABASE: keycloak
+      KC_DB_USERNAME: kc
+      KC_DB_PASSWORD: secret
+    ports: ["8080:8080"]
+    volumes:
+      - ./Keycloak-configs:/opt/keycloak/data/import
+    command: [start-dev, --hostname-strict=false, --import-realm]
+    depends_on: [postgres]
+
+  # --------------- Local-Node #1 --------------- #
+  donors-frontend:
+    build: ./Local-Node/donors-frontend
+    container_name: donors-frontend-1
+    restart: unless-stopped
+    env_file:
+      - ./local-nodes-env/local-node-donors-1.env
+    volumes:
+      - ./Local-Node/donors-frontend:/app
+    ports: ["3003:3001"]
+    environment:
+      CHOKIDAR_USEPOLLING: "true"
+    depends_on: [local-node-backend]
+
+  medical-staff-frontend:
+    build: ./Local-Node/medical-staff-frontend
+    container_name: medical-staff-frontend-1
+    restart: unless-stopped
+    env_file:
+      - ./local-nodes-env/local-node-medical-staff-1.env
+    volumes:
+      - ./Local-Node/medical-staff-frontend:/app
+    ports: ["3004:3000"]
+    environment:
+      CHOKIDAR_USEPOLLING: "true"
+    depends_on: [local-node-backend]
+
+  local-node-backend:
+    build: ./Local-Node/local-node-backend
+    container_name: local-node-backend-1
+    restart: unless-stopped
+    env_file:
+      - ./local-nodes-env/local-node-backend-1.env
+    volumes:
+      - ./Local-Node/local-node-backend:/app
+    command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+    ports: ["8000:8000"]
+    environment:
+      MONGO_URL: mongodb://mongo-database:27017
+    depends_on: [mongo-database]
+
+  queries:
+    build: ./Local-Node/queries
+    container_name: local-node-queries-1
+    restart: unless-stopped
+    env_file:
+      - ./local-nodes-env/local-node-queries-1.env
+    volumes:
+      - ./Local-Node/queries:/app
+    command: uvicorn main:app --host 0.0.0.0 --port 8001 --reload
+    ports: ["8001:8001"]
+    environment:
+      MONGO_URL: mongodb://mongo-database:27017
+    depends_on: [mongo-database]
+
+  # --------------- Local-Node #2 --------------- #
+  donors-frontend-second:
+    build: ./Local-Node/donors-frontend
+    container_name: donors-frontend-2
+    restart: unless-stopped
+    env_file:
+      - ./local-nodes-env/local-node-donors-2.env
+    volumes:
+      - ./Local-Node/donors-frontend:/app
+    ports: ["3005:3001"]
+    environment:
+      CHOKIDAR_USEPOLLING: "true"
+    depends_on: [local-node-backend-second]
+
+  medical-staff-frontend-second:
+    build: ./Local-Node/medical-staff-frontend
+    container_name: medical-staff-frontend-2
+    restart: unless-stopped
+    env_file:
+      - ./local-nodes-env/local-node-medical-staff-2.env
+    volumes:
+      - ./Local-Node/medical-staff-frontend:/app
+    ports: ["3006:3000"]
+    environment:
+      CHOKIDAR_USEPOLLING: "true"
+    depends_on: [local-node-backend-second]
+
+  local-node-backend-second:
+    build: ./Local-Node/local-node-backend
+    container_name: local-node-backend-2
+    restart: unless-stopped
+    env_file:
+      - ./local-nodes-env/local-node-backend-2.env
+    volumes:
+      - ./Local-Node/local-node-backend:/app
+    command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload   
+    ports: ["8003:8000"]                                          
+    environment:
+      MONGO_URL: mongodb://mongo-database:27017
+    depends_on: [mongo-database]
+
+  queries-second:
+    build: ./Local-Node/queries
+    container_name: local-node-queries-2
+    restart: unless-stopped
+    env_file:
+      - ./local-nodes-env/local-node-queries-2.env
+    volumes:
+      - ./Local-Node/queries:/app
+    command: uvicorn main:app --host 0.0.0.0 --port 8001 --reload
+    ports: ["8004:8001"]                                           
+    environment:
+      MONGO_URL: mongodb://mongo-database:27017
+    depends_on: [mongo-database]
+
+  # ---------------- Web-Node ---------------- #
+  researchers-frontend:
+    build: ./Web-Node/researchers-frontend
+    container_name: researchers-frontend
+    restart: unless-stopped
+    env_file:
+      - ./web-node-env/web-node-researchers-frontent.env
+    volumes:
+      - ./Web-Node/researchers-frontend:/app
+    ports: ["3007:3002"]
+    environment:
+      CHOKIDAR_USEPOLLING: "true"
+    depends_on: [researchers-backend]
+
+  researchers-backend:
+    build: ./Web-Node/researchers-backend
+    container_name: researchers-backend
+    restart: unless-stopped
+    env_file:
+      - ./web-node-env/web-node-researchers-backend.env
+    volumes:
+      - ./Web-Node/researchers-backend:/app
+    command: uvicorn main:app --host 0.0.0.0 --port 8002 --reload
+    ports: ["8002:8002"]
+    environment:
+      MONGO_URL: mongodb://mongo-database:27017
+    depends_on: [mongo-database]
+
+volumes:
+  keycloak_data:
+  mongo_data:

@@ -1,0 +1,10 @@
+
+.upload-container {
+  height: 100%; 
+}
+.upload-form-new-patient,
+.upload-excel {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
