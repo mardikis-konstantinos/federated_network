@@ -20,5 +20,7 @@ Regardless of whether you run the project locally or with Docker, you must defin
    - URL of your Keycloak server.
 2. **`CLIENT_SECRET`**
    - The client secret in the credentials tabs in the keycloak server-client in local-server (1 or 2 for Docker configure)
+3. **`MONGO_URI`**
+   - MongoDB url
 
 All the other don't need to be changed.
