@@ -6,7 +6,7 @@
   - An example environment file provided for projects that are run _without_ Docker.  
   - Copy or rename this file to `.env` and then edit the required variables.
 
-- **`web-nodes-env/web-node-researchers-backend.env`:  
+- **`web-nodes-env/web-node-researchers-backend.env`**:  
   - This files contain environment variables the web “node” when using a Docker-based setup.  
   - If you intend to run the project inside Docker containers, you should refer to `.env`.
 
