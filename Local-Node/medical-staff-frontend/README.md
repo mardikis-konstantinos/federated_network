@@ -1,12 +1,26 @@
-# React + Vite
+# Medical Staff React App
+## Environment Files
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+- **`.env`**:  
+  - An example environment file provided for projects that are run _without_ Docker.  
+  - Copy or rename this file to `.env` and then edit the required variables.
 
-Currently, two official plugins are available:
+- **`local-nodes-env/local-node-medical-staff-1.env` & `local-nodes-env/local-node-medical-staff-2.env`**:  
+  - These files contain environment variables for two separate local “nodes” when using a Docker-based setup.  
+  - If you intend to run the project inside Docker containers, you should refer to these two files instead of the top-level `.env`.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## Expanding the ESLint configuration
+## Required Environment Variables
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Regardless of whether you run the project locally or with Docker, you must define the following variables:
+
+1. **`VITE_KEYCLOAK_BASE_URL`**  
+   - URL of your Keycloak server.
+
+2. **`VITE_LOCAL_BACKEND_URL`**  
+   - Base URL for your local backend API.
+
+Both of these variables must be set to valid URLs before starting the application.
+
+---
