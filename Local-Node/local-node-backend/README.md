@@ -16,8 +16,9 @@
 
 Regardless of whether you run the project locally or with Docker, you must define the following variables:
 
-1. **`VITE_KEYCLOAK_BASE_URL`**  
+1. **`KEYCLOAK_SERVER`**  
    - URL of your Keycloak server.
+2. **`CLIENT_SECRET`**
+   - The client secret in the credentials tabs in the keycloak server-client in local-server (1 or 2 for Docker configure)
 
-
-Both of these variables must be set to valid URLs before starting the application.
+All the other don't need to be changed.
