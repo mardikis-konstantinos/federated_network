@@ -1,6 +1,6 @@
 # Federated Blood-Donation Platform
 
-> **Experimental platform** for peer-to-peer (federated) collection and anonymised sharing of blood-donation data.
+> **Experimental platform** for peer-to-peer (federated) collection and anonymised sharing of donation data.
 > It consists of multiple (two) **Local Nodes** (hospital instances) and a central **Web Node**, with a complete front-end ↔ back-end flow, Keycloak-based authentication, and sample datasets for reproducibility.
 
 ---
