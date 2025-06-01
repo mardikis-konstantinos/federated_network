@@ -6,7 +6,7 @@
   - An example environment file provided for projects that are run _without_ Docker.  
   - Copy or rename this file to `.env` and then edit the required variables.
 
-- **`local-nodes-env/local-node-backend-1.env` & `local-nodes-env/local-node-backend-2.env`**:  
+- **`local-nodes-env/local-node-queries-1.env` & `local-nodes-env/local-node-queries-2.env`**:  
   - These files contain environment variables for two separate local “nodes” when using a Docker-based setup.  
   - If you intend to run the project inside Docker containers, you should refer to these two files instead of the top-level `.env`.
 
