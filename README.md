@@ -14,11 +14,11 @@
 | &nbsp;&nbsp;├─ **donors-frontend/** | React application where donors register |
 | &nbsp;&nbsp;├─ **local-node-backend/** | FastAPI REST API exposed by the local node |
 | &nbsp;&nbsp;├─ **medical-staff-frontend/** | React dashboard for medical staff |
-| &nbsp;&nbsp;└─ **queries/** | Parameterised SQL queries & canned reports |
+| &nbsp;&nbsp;└─ **queries/** | FastAPI REST API with queries |
 | **Web-Node/** | Central web node |
 | &nbsp;&nbsp;├─ **researchers-backend/** | FastAPI API for researchers |
 | &nbsp;&nbsp;├─ **researchers-frontend/** | React analytics dashboard |
-| &nbsp;&nbsp;└─ **datasets/** | Sample anonymised CSV datasets |
+| &nbsp;&nbsp;└─ **datasets/** | Sample anonymised Excel datasets |
 | **local-nodes-env/** | Docker Compose configuration for local nodes |
 | **web-node-env/** | Docker Compose configuration for the web node |
 | **docker-compose.yml** | One-shot compose file that spins up Keycloak + all nodes |
